@@ -24,6 +24,25 @@ class LinkedList {
         this.p=q;
     }
   }
+  Supp(){
+    var q=this.p;
+    if(q== null || q.next==null){
+      q=null;
+    }
+    else{
+    while(q.next.next != null){
+      q=q.next;
+    }
+    q.next=null;
+  }
+  }
+  finListe(){
+    var q=this.p;
+    while(q.next!=null){
+      q=q.next;
+    }
+    return(q);
+  }
   Taille(){
     var q=this.p;
     var c=0;
@@ -65,28 +84,60 @@ function fin(i,j){
 }
 
 function Play(i,j){
+  var timer =1000;
   var snake= new LinkedList();
-  snake.p=st.rows[i].cells[j];
-  snake.p.innerHTML="SH";
-  snake.p.className="snakehead";
-    setInterval(function() {
+  snake.Ajout(st.rows[i].cells[j]);
+  snake.p.T.innerHTML="SH";
+  snake.p.T.classList.add("snakehead");
+  var p=Point();
+    var intervalID=setInterval(function() {
       var np=move(i,j,d);
-      var pr=snake.p;
       i=np[0];
       j=np[1];
       if(fin(i,j)==true){
-        clearInterval;
+        score.innerHTML="Score="+snake.Taille();
+        clearInterval(intervalID);
+        return;
       }
       else{
-        snake.p=st.rows[i].cells[j];
-        snake.p.innerHTML="SH";
-        snake.p.className="snakehead";
-        pr.innerHTML=null;
-        pr.classList.remove("snakehead");
+        snake.Ajout(st.rows[i].cells[j])
+        snake.p.T.innerHTML="SH";
+        if(p==snake.p.T){
+        snake.p.T.classList.remove("Point");
+        }
+        snake.p.T.classList.add("snakehead");
+        var f=snake.p.next;
+        f.T.innerHTML="SB";
+        f.T.classList.remove("snakehead");
+        f.T.classList.add("snake");
+        if(snake.Taille()>2 && p!=snake.p.T){
+          var tail=snake.finListe();
+          tail.T.innerHTML="";
+          tail.T.classList.remove("snake");
+          snake.Supp();
+        }
+        else{
+          if(p==snake.p.T){
+            p=Point();
+          }
+        }
       }
-
-    }, 2000);
-    score.innerHTML="Score="+snake.Taille();
+      
+    }, timer);
+}
+function random(){
+  var randomInt = Math.floor(Math.random() * 50);
+  return(randomInt);
+}
+function Point(){
+  do{
+    var x=random();
+    var y=random();
+  var p=st.rows[x].cells[y];
+  }while(p.innerHTML =="SH" || p.innerHTML =="SB" || x==23);
+  p.classList.add("Point");
+  p.innerHTML="P";
+  return p;
 }
 document.addEventListener("keydown", function(event) {
   var key = event.key;

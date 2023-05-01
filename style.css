@@ -34,3 +34,6 @@ td{
 .snake{
     background-color: rgba(71, 255, 47, 0.651);
 }
+.Point{
+    background-color: yellow;
+}
