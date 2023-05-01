@@ -3,6 +3,9 @@ var score=document.getElementById("point");
 var i=24;
 var j=24;
 var d="z";
+var de=st.innerHTML;
+var button =document.getElementById("Play");
+var GameRunning =false;
 class Node{
     constructor(T){
         this.T=T;
@@ -84,7 +87,12 @@ function fin(i,j){
 }
 
 function Play(i,j){
-  var timer =1000;
+  if (GameRunning){
+    return;
+  }
+  GameRunning=true;
+  st.innerHTML=de;
+  var timer =500;
   var snake= new LinkedList();
   snake.Ajout(st.rows[i].cells[j]);
   snake.p.T.innerHTML="SH";
@@ -94,8 +102,9 @@ function Play(i,j){
       var np=move(i,j,d);
       i=np[0];
       j=np[1];
-      if(fin(i,j)==true){
-        score.innerHTML="Score="+snake.Taille();
+      if(fin(i,j)==true || st.rows[i].cells[j].innerHTML=="SB"){
+        score.innerHTML="Score :"+snake.Taille();
+        GameRunning=false;
         clearInterval(intervalID);
         return;
       }
